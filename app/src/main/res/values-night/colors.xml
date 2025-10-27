@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors (keep same for consistency) -->
+    <color name="primary_blue">#6BB6FF</color>
+    <color name="primary_green">#7ED957</color>
+    <color name="primary_purple">#B19EFF</color>
+
+    <!-- Dark Mode Background Colors -->
+    <color name="background_light">#121212</color>
+    <color name="card_background">#1E1E1E</color>
+
+    <!-- Dark Mode Text Colors -->
+    <color name="text_primary">#E1E1E1</color>
+    <color name="text_secondary">#A0A0A0</color>
+    <color name="text_white">#FFFFFF</color>
+
+    <!-- Accent Colors (keep same) -->
+    <color name="accent_pink">#FF9ECD</color>
+    <color name="accent_orange">#FFB054</color>
+    <color name="accent_mint">#7FFFD4</color>
+    <color name="accent_red">#FF6B6B</color>
+    <color name="accent_yellow">#FFD93D</color>
+
+    <!-- Status Colors (keep same) -->
+    <color name="success_green">#4CAF50</color>
+    <color name="error_red">#F44336</color>
+    <color name="warning_orange">#FF9800</color>
+
+    <!-- Dark Mode Neutral Colors -->
+    <color name="gray_light">#2C2C2C</color>
+    <color name="gray_medium">#3D3D3D</color>
+    <color name="gray_dark">#707070</color>
+
+    <!-- Material Design Defaults -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+</resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/dashboardFragment"
+        android:icon="@drawable/ic_dashboard"
+        android:title="@string/nav_dashboard" />
+
+    <item
+        android:id="@+id/habitsFragment"
+        android:icon="@drawable/ic_habits"
+        android:title="@string/nav_habits" />
+
+    <item
+        android:id="@+id/stepsFragment"
+        android:icon="@drawable/ic_steps"
+        android:title="Steps" />
+
+    <item
+        android:id="@+id/moodFragment"
+        android:icon="@drawable/ic_mood"
+        android:title="@string/nav_mood" />
+
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/nav_settings" />
+</menu>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors from Logo -->
+    <color name="primary_blue">#6BB6FF</color>
+    <color name="primary_green">#7ED957</color>
+    <color name="primary_purple">#B19EFF</color>
+
+    <!-- Background Colors -->
+    <color name="background_light">#F8F9FE</color>
+    <color name="card_background">#FFFFFF</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#2D3142</color>
+    <color name="text_secondary">#8E8EA9</color>
+    <color name="text_white">#FFFFFF</color>
+
+    <!-- Accent Colors -->
+    <color name="accent_pink">#FF9ECD</color>
+    <color name="accent_orange">#FFB054</color>
+    <color name="accent_mint">#7FFFD4</color>
+    <color name="accent_red">#FF6B6B</color>
+    <color name="accent_yellow">#FFD93D</color>
+
+    <!-- Status Colors -->
+    <color name="success_green">#4CAF50</color>
+    <color name="error_red">#F44336</color>
+    <color name="warning_orange">#FF9800</color>
+
+    <!-- Neutral Colors -->
+    <color name="gray_light">#F5F5F5</color>
+    <color name="gray_medium">#E0E0E0</color>
+    <color name="gray_dark">#9E9E9E</color>
+
+    <!-- Material Design Defaults -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+</resources>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_background"
+    android:padding="16dp">
+
+    <!-- App Logo -->
+    <ImageView
+        android:id="@+id/ivWidgetLogo"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/app_name"
+        android:src="@mipmap/ic_launcher" />
+
+    <!-- App Name -->
+    <TextView
+        android:id="@+id/tvWidgetTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/ivWidgetLogo"
+        android:text="@string/app_name"
+        android:textColor="#2D3142"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <!-- Subtitle -->
+    <TextView
+        android:id="@+id/tvWidgetSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvWidgetTitle"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/ivWidgetLogo"
+        android:text="Today's Progress"
+        android:textColor="#8E8EA9"
+        android:textSize="11sp" />
+
+    <!-- Progress Circle -->
+    <TextView
+        android:id="@+id/tvProgressPercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivWidgetLogo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="0%"
+        android:textColor="#6BB6FF"
+        android:textSize="48sp"
+        android:textStyle="bold" />
+
+    <!-- Completion Text -->
+    <TextView
+        android:id="@+id/tvCompletionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvProgressPercentage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:text="0 of 0 completed"
+        android:textColor="#8E8EA9"
+        android:textSize="12sp" />
+
+    <!-- Motivational Text -->
+    <TextView
+        android:id="@+id/tvMotivation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvCompletionText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="Keep going! 💪"
+        android:textColor="#7ED957"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <!-- Last Updated -->
+    <TextView
+        android:id="@+id/tvLastUpdated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Updated just now"
+        android:textColor="#8E8EA9"
+        android:textSize="10sp" />
+
+</RelativeLayout>

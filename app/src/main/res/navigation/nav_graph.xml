@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.example.healthflow.ui.dashboard.DashboardFragment"
+        android:label="@string/nav_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/habitsFragment"
+        android:name="com.example.healthflow.ui.habits.HabitsFragment"
+        android:label="@string/nav_habits"
+        tools:layout="@layout/fragment_habits" />
+
+    <fragment
+        android:id="@+id/stepsFragment"
+        android:name="com.example.healthflow.ui.steps.StepsFragment"
+        android:label="Steps"
+        tools:layout="@layout/fragment_steps" />
+
+    <fragment
+        android:id="@+id/moodFragment"
+        android:name="com.example.healthflow.ui.mood.MoodFragment"
+        android:label="@string/nav_mood"
+        tools:layout="@layout/fragment_mood" />
+
+    <fragment
+        android:id="@+id/achievementsFragment"
+        android:name="com.example.healthflow.ui.achievements.AchievementsFragment"
+        android:label="Achievements"
+        tools:layout="@layout/fragment_achievements" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.healthflow.ui.settings.SettingsFragment"
+        android:label="@string/nav_settings"
+        tools:layout="@layout/fragment_settings" />
+
+</navigation>

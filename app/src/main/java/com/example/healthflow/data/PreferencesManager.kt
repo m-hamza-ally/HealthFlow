@@ -1,31 +1,21 @@
 package com.example.healthflow.data
 
 import android.content.Context
-import android.content.SharedPreferences
+import com.example.healthflow.database.HealthFlowDatabase
+import com.example.healthflow.database.repository.HealthFlowRepository
 import com.example.healthflow.models.Habit
 import com.example.healthflow.models.MoodEntry
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.runBlocking
 
 /**
- * Manager class for handling SharedPreferences data persistence
+ * Manager class bridging old SharedPreferences API with new Room Database
  */
-class PreferencesManager(context: Context) {
+class PreferencesManager private constructor(context: Context) {
 
-    private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-    private val gson = Gson()
+    private val database = HealthFlowDatabase.getDatabase(context)
+    private val repository = HealthFlowRepository(database)
 
     companion object {
-        private const val PREFS_NAME = "healthflow_prefs"
-        private const val KEY_HABITS = "habits"
-        private const val KEY_MOODS = "moods"
-        private const val KEY_REMINDERS_ENABLED = "reminders_enabled"
-        private const val KEY_REMINDER_INTERVAL = "reminder_interval"
-        private const val KEY_FIRST_LAUNCH = "first_launch"
-        private const val KEY_TODAY_STEPS = "today_steps"
-        private const val KEY_STEPS_DATE = "steps_date"
-        private const val KEY_DARK_MODE = "dark_mode"
-
         @Volatile
         private var instance: PreferencesManager? = null
 
@@ -38,205 +28,90 @@ class PreferencesManager(context: Context) {
 
     // ==================== Habits ====================
 
-    /**
-     * Save habits list to SharedPreferences
-     */
-    fun saveHabits(habits: List<Habit>) {
-        val json = gson.toJson(habits)
-        prefs.edit().putString(KEY_HABITS, json).apply()
+    fun getHabits(): List<Habit> = runBlocking {
+        repository.getAllHabits()
     }
 
-    /**
-     * Get all habits from SharedPreferences
-     */
-    fun getHabits(): List<Habit> {
-        val json = prefs.getString(KEY_HABITS, null) ?: return emptyList()
-        val type = object : TypeToken<List<Habit>>() {}.type
-        return try {
-            gson.fromJson(json, type)
-        } catch (e: Exception) {
-            emptyList()
-        }
+    fun addHabit(habit: Habit) = runBlocking {
+        repository.insertHabit(habit)
     }
 
-    /**
-     * Add a new habit
-     */
-    fun addHabit(habit: Habit) {
-        val habits = getHabits().toMutableList()
-        habits.add(habit)
-        saveHabits(habits)
+    fun updateHabit(updatedHabit: Habit) = runBlocking {
+        repository.updateHabit(updatedHabit)
     }
 
-    /**
-     * Update an existing habit
-     */
-    fun updateHabit(updatedHabit: Habit) {
-        val habits = getHabits().toMutableList()
-        val index = habits.indexOfFirst { it.id == updatedHabit.id }
-        if (index != -1) {
-            habits[index] = updatedHabit
-            saveHabits(habits)
-        }
+    fun deleteHabit(habitId: String) = runBlocking {
+        repository.deleteHabit(habitId)
     }
 
-    /**
-     * Delete a habit
-     */
-    fun deleteHabit(habitId: String) {
-        val habits = getHabits().toMutableList()
-        habits.removeAll { it.id == habitId }
-        saveHabits(habits)
-    }
-
-    /**
-     * Toggle habit completion for today
-     */
     fun toggleHabitCompletion(habitId: String) {
-        val habits = getHabits().toMutableList()
-        val index = habits.indexOfFirst { it.id == habitId }
-        if (index != -1) {
-            habits[index] = habits[index].toggleCompletion()
-            saveHabits(habits)
+        val habits = getHabits()
+        val habit = habits.find { it.id == habitId }
+        habit?.let {
+            updateHabit(it.toggleCompletion())
         }
     }
 
     // ==================== Mood Entries ====================
 
-    /**
-     * Save mood entries list to SharedPreferences
-     */
-    fun saveMoodEntries(moods: List<MoodEntry>) {
-        val json = gson.toJson(moods)
-        prefs.edit().putString(KEY_MOODS, json).apply()
+    fun getMoodEntries(): List<MoodEntry> = runBlocking {
+        repository.getAllMoodEntries()
     }
 
-    /**
-     * Get all mood entries from SharedPreferences
-     */
-    fun getMoodEntries(): List<MoodEntry> {
-        val json = prefs.getString(KEY_MOODS, null) ?: return emptyList()
-        val type = object : TypeToken<List<MoodEntry>>() {}.type
-        return try {
-            gson.fromJson<List<MoodEntry>>(json, type).sortedByDescending { it.timestamp }
-        } catch (e: Exception) {
-            emptyList()
-        }
+    fun addMoodEntry(moodEntry: MoodEntry) = runBlocking {
+        repository.insertMoodEntry(moodEntry)
     }
 
-    /**
-     * Add a new mood entry
-     */
-    fun addMoodEntry(moodEntry: MoodEntry) {
-        val moods = getMoodEntries().toMutableList()
-        moods.add(moodEntry)
-        saveMoodEntries(moods)
-    }
-
-    /**
-     * Delete a mood entry
-     */
-    fun deleteMoodEntry(moodId: String) {
-        val moods = getMoodEntries().toMutableList()
-        moods.removeAll { it.id == moodId }
-        saveMoodEntries(moods)
+    fun deleteMoodEntry(moodId: String) = runBlocking {
+        repository.deleteMoodEntry(moodId)
     }
 
     // ==================== Settings ====================
 
-    /**
-     * Enable or disable hydration reminders
-     */
-    fun setRemindersEnabled(enabled: Boolean) {
-        prefs.edit().putBoolean(KEY_REMINDERS_ENABLED, enabled).apply()
+    fun setRemindersEnabled(enabled: Boolean) = runBlocking {
+        repository.saveSetting("reminders_enabled", enabled.toString())
     }
 
-    /**
-     * Check if reminders are enabled
-     */
-    fun areRemindersEnabled(): Boolean {
-        return prefs.getBoolean(KEY_REMINDERS_ENABLED, false)
+    fun areRemindersEnabled(): Boolean = runBlocking {
+        repository.getSetting("reminders_enabled")?.toBoolean() ?: false
     }
 
-    /**
-     * Set reminder interval in minutes
-     */
-    fun setReminderInterval(minutes: Int) {
-        prefs.edit().putInt(KEY_REMINDER_INTERVAL, minutes).apply()
+    fun setReminderInterval(minutes: Int) = runBlocking {
+        repository.saveSetting("reminder_interval", minutes.toString())
     }
 
-    /**
-     * Get reminder interval in minutes (default 60 minutes)
-     */
-    fun getReminderInterval(): Int {
-        return prefs.getInt(KEY_REMINDER_INTERVAL, 60)
+    fun getReminderInterval(): Int = runBlocking {
+        repository.getSetting("reminder_interval")?.toInt() ?: 60
     }
 
-    /**
-     * Check if this is the first launch
-     */
-    fun isFirstLaunch(): Boolean {
-        val isFirst = prefs.getBoolean(KEY_FIRST_LAUNCH, true)
+    fun setDarkMode(enabled: Boolean) = runBlocking {
+        repository.saveSetting("dark_mode", enabled.toString())
+    }
+
+    fun isDarkModeEnabled(): Boolean = runBlocking {
+        repository.getSetting("dark_mode")?.toBoolean() ?: false
+    }
+
+    fun isFirstLaunch(): Boolean = runBlocking {
+        val isFirst = repository.getSetting("first_launch")?.toBoolean() ?: true
         if (isFirst) {
-            prefs.edit().putBoolean(KEY_FIRST_LAUNCH, false).apply()
+            repository.saveSetting("first_launch", "false")
         }
-        return isFirst
-    }
-
-    /**
-     * Clear all data (for testing or reset)
-     */
-    fun clearAllData() {
-        prefs.edit().clear().apply()
+        isFirst
     }
 
     // ==================== Step Counter ====================
 
-    /**
-     * Save today's step count
-     */
-    fun saveTodaySteps(steps: Int) {
+    fun saveTodaySteps(steps: Int) = runBlocking {
         val today = getCurrentDate()
-        prefs.edit()
-            .putInt(KEY_TODAY_STEPS, steps)
-            .putString(KEY_STEPS_DATE, today)
-            .apply()
+        repository.saveStepRecord(today, steps)
     }
 
-    /**
-     * Get today's step count
-     */
-    fun getTodaySteps(): Int {
+    fun getTodaySteps(): Int = runBlocking {
         val today = getCurrentDate()
-        val savedDate = prefs.getString(KEY_STEPS_DATE, "")
-
-        return if (savedDate == today) {
-            prefs.getInt(KEY_TODAY_STEPS, 0)
-        } else {
-            // New day, reset steps
-            0
-        }
+        repository.getStepRecordByDate(today)
     }
 
-    // ==================== Dark Mode ====================
-
-    /**
-     * Enable or disable dark mode
-     */
-    fun setDarkMode(enabled: Boolean) {
-        prefs.edit().putBoolean(KEY_DARK_MODE, enabled).apply()
-    }
-
-    /**
-     * Check if dark mode is enabled
-     */
-    fun isDarkModeEnabled(): Boolean {
-        return prefs.getBoolean(KEY_DARK_MODE, false)
-    }
-
-    /**
-     * Get current date string
-     */
     private fun getCurrentDate(): String {
         val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
         return sdf.format(java.util.Date())

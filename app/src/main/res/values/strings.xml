@@ -60,7 +60,7 @@
     <string name="interval_3_hours">Every 3 hours</string>
     <string name="notification_settings">Notification Settings</string>
     <string name="about">About HealthFlow</string>
-    <string name="version">Version 1.0</string>
+    <string name="version">Version 2.0</string>
 
     <!-- Notifications -->
     <string name="notification_channel_name">Hydration Reminders</string>
